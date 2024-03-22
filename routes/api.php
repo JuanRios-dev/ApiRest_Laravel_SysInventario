@@ -14,6 +14,12 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\RefundController;
 use App\Http\Controllers\CellarController;
 use App\Http\Controllers\UserController;
+
+//WORKSHOP
+use App\Http\Controllers\MotorcycleController;
+use App\Http\Controllers\InspectionController;
+use App\Http\Controllers\TicketController;
+
 use App\Models\Budget_movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -105,6 +111,26 @@ Route::group(['prefix' => 'v1'], function () {
 		//PAYMENTS
 		Route::get('payments', [PaymentController::class, 'index']);
 		Route::post('payments', [PaymentController::class, 'store']);
+		
+		Route::group(['prefix' => 'mc'], function () {
+			//MOTORCYCLES
+			Route::get('motorcycles', [MotorcycleController::class, 'index']);
+			Route::post('motorcycles', [MotorcycleController::class, 'store']);
+			Route::put('motorcycles/{id}', [MotorcycleController::class, 'update']);
+			Route::get('motorcycles/{id}', [MotorcycleController::class, 'show']);
+			Route::delete('motorcycles/{id}', [MotorcycleController::class, 'destroy']);
+			
+			//INSPECTIONS
+			Route::get('inspections', [InspectionController::class, 'index']);
+			Route::post('inspections', [InspectionController::class, 'store']);
+			Route::put('inspections/{id}', [InspectionController::class, 'update']);
+			Route::delete('inspections/{id}', [InspectionController::class, 'destroy']);
+			
+			//TICKETS
+			Route::get('tickets', [TicketController::class, 'index']);
+			Route::post('tickets', [TicketController::class, 'store']);
+			Route::get('tickets/{id}', [TicketController::class, 'show']);
+		});
     });
 
     Route::post('/register', [AuthController::class, 'register']);

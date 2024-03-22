@@ -53,4 +53,11 @@ class Product extends Model
     {
         return $this->hasMany(Transfer::class);
     }
+	
+	public function ticketProduct()
+    {
+        return $this->belongsToMany(Ticket::class)
+            ->withPivot('cantidad')
+            ->withTimestamps();
+    }
 }
