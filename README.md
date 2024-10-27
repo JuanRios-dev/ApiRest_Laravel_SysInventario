@@ -13,8 +13,8 @@ MySQL o cualquier otro sistema de base de datos compatible
 Instalación
 Clonar el repositorio:
 
-git clone https://github.com/JuanRios-dev/TechXamp.Vue.git
-cd TechXamp.Vue
+git clone https://github.com/JuanRios-dev/TechXamp-ApiLaravel.git
+cd TechXamp-ApiLaravel
 
 
 Actualizar las dependencias de Composer:
