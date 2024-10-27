@@ -121,8 +121,14 @@ class SaleController extends Controller
 	{
 		$sale = Sale::with('customer', 'productSale')->findOrFail($id);
 
-		return response()->json(['sale' => $sale], 200);
+		$hasRefunds = $sale->refunds()->exists();
+
+		return response()->json([
+			'sale' => $sale,
+			'hasRefunds' => $hasRefunds
+		], 200);
 	}
+
 
 	public function generatePDF($id)
 	{

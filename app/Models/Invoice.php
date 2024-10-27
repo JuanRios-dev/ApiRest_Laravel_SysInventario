@@ -38,6 +38,6 @@ class Invoice extends Model
 	
 	public function refunds()
     {
-        return $this->hasMany(Refund::class);
+        return $this->hasMany(Refund::class, 'invoice_id');
     }
 }

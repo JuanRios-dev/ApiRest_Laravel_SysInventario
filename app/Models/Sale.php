@@ -29,7 +29,6 @@ class Sale extends Model
 		return $this->belongsTo(Customer::class);
 	}
 
-	
 	public function productSale()
     {
         return $this->belongsToMany(Product::class)
@@ -39,6 +38,6 @@ class Sale extends Model
 	
 	public function refunds()
     {
-        return $this->hasMany(Refund::class);
+        return $this->hasMany(Refund::class, 'sale_id');
     }
 }

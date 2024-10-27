@@ -154,17 +154,46 @@ class RefundController extends Controller
 
 		// Verificar si el refund está asociado a una sale o a una invoice
 		if ($refund->sale_id) {
-			$refund->load('sale.customer');
+			$refund->load(['sale.customer', 'sale.productSale']); // Cargar el cliente y los productos de la venta
 			$relatedData = $refund->sale;
 		} elseif ($refund->invoice_id) {
-			$refund->load('invoice.customer');
+			$refund->load(['invoice.provider', 'invoice.productInvoice']); // Cargar el cliente y los productos de la factura
 			$relatedData = $refund->invoice;
 		} else {
 			return response()->json(['error' => 'No se encontró una venta o factura asociada'], 404);
 		}
 
+		$refundDetails = $refund->productRefund->map(function ($refundProduct) use ($relatedData) {
+			// Buscar el producto en la relación de la venta o factura
+			$relatedProduct = null;
+	
+			// Verificar si estamos trabajando con una venta o una factura
+			if (isset($relatedData->productSale)) {
+				$relatedProduct = $relatedData->productSale->where('id', $refundProduct->id)->first();
+			} elseif (isset($relatedData->productInvoice)) {
+				$relatedProduct = $relatedData->productInvoice->where('id', $refundProduct->id)->first();
+			}
+		
+			return [
+				'product_id' => $refundProduct->id,
+				'codigo' => $refundProduct->codigo ?? null, 
+				'descripcion' => $refundProduct->descripcion ?? null,
+				'cantidad' => $refundProduct->pivot->cantidad,
+				'precio_total' => $refundProduct->pivot->precio_total,
+				'precio_unitario' => $relatedProduct->pivot->precio_unitario ?? null,
+				'descuento' => $relatedProduct->pivot->descuento ?? null,
+				'impuestos' => $relatedProduct->pivot->impuestos ?? null,
+				'valor_descuento' => $relatedProduct->pivot->valor_descuento ?? null,
+				'subtotal' => $relatedProduct->pivot->subtotal ?? null, // Agregar subtotal
+			];
+		});		
+
 		return response()->json([
-			'refund' => $refund,
+			'refund' => [
+				'id' => $refund->id,
+				'amount' => $refund, // Asegúrate de incluir otros campos necesarios
+				'product_refund' => $refundDetails, // Productos del refund con sus detalles
+			],
 			'relatedData' => $relatedData
 		], 200);
 	}
