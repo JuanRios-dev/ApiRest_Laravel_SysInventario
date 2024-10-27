@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('codigo')->unique();
             $table->string('descripcion');
-            $table->enum('tipo_producto', ['inventariable', 'no inventariable', 'servicio']);
             $table->decimal('precio', 10, 2);
             $table->decimal('iva_compra', 5, 2);
 			$table->decimal('iva_venta', 5, 2);

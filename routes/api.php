@@ -56,6 +56,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         //PRODUCTS
         Route::get('products', [ProductController::class, 'index']);
+        Route::get('searchProduct', [ProductController::class, 'searchProduct']);
         Route::get('products/{id}', [ProductController::class, 'show']);
         Route::post('products', [ProductController::class, 'store']);
 		Route::put('products/{id}', [ProductController::class, 'update']);
@@ -96,6 +97,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('sales', [SaleController::class, 'index']);
 		Route::get('sales/{id}', [SaleController::class, 'show']);
 		Route::post('sales', [SaleController::class, 'store']);
+		Route::get('sales/{id}/pdf', [SaleController::class, 'generatePDF']);
+
 		
 		//REFUNDS
 		Route::get('refunds', [RefundController::class, 'index']);
